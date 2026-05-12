@@ -1,0 +1,62 @@
+/* Специфичные стили для фестивалей */
+.festivals-hero {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+}
+
+.festivals-hero::before {
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    font-size: 300px;
+    opacity: 0.1;
+    transform: rotate(15deg);
+}
+
+.festival-card .event-image {
+    background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+}
+
+.event-highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.highlight {
+    background: linear-gradient(135deg, #667eea20, #764ba220);
+    color: #667eea;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 11px;
+    font-weight: 500;
+    border: 1px solid #667eea30;
+}
+
+.festival-card .price-tag {
+    color: #ff6b6b;
+}
+
+.festival-btn {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%) !important;
+}
+
+.festival-btn:hover {
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4) !important;
+}
+
+.festival-card .progress-fill {
+    background: linear-gradient(90deg, #ff6b6b, #ff8e53);
+}
+
+/* Бейджи для фестивалей */
+.event-badge.popular {
+    background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .event-highlights {
+        justify-content: center;
+    }
+}
