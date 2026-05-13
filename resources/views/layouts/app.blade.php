@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Auth;
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Мероприятия') - Культурный портал</title>
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/logo.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/logo.png') }}">
+
     <!-- Основные стили -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     
