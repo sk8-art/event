@@ -148,6 +148,9 @@ Route::middleware('auth')->group(function () {
     // Маршруты только для админов
     Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/users', [AdminController::class, 'users'])->name('users');
+        Route::get('/users/{user}/edit', [AdminController::class, 'editUser'])->name('users.edit');
+        Route::put('/users/{user}', [AdminController::class, 'updateUser'])->name('users.update');
+        
         Route::get('/events', [AdminController::class, 'events'])->name('events');
         Route::get('/roles', [AdminController::class, 'roles'])->name('roles');
     });

@@ -114,7 +114,6 @@
                 </div>
                 
                 <a href="{{ route('home') }}" class="btn-home">
-                    <span>🏠</span>
                     На главную
                 </a>
             </div>

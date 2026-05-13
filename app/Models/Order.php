@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Order extends Model
 {
@@ -13,7 +14,7 @@ class Order extends Model
         'order_number',
         'user_id',
         'event_id',
-        'ticket_type_id',
+        'ticket_type_id', 
         'quantity',
         'unit_price',
         'total_price',
@@ -24,7 +25,6 @@ class Order extends Model
         'notes',
         'paid_at',
         'cancelled_at',
-        'ticket_type_id',
     ];
 
     protected $casts = [
@@ -36,11 +36,6 @@ class Order extends Model
         'cancelled_at' => 'datetime',
     ];
 
-
-    public function ticketType()
-    {
-        return $this->belongsTo(TicketType::class);
-    }
     // Статусы заказа
     const STATUS_PENDING = 'pending';
     const STATUS_PAID = 'paid';
@@ -49,26 +44,21 @@ class Order extends Model
     const STATUS_REFUNDED = 'refunded';
     const STATUS_COMPLETED = 'completed';
 
-    /**
-     * Связь с пользователем
-     */
+    public function ticketType()
+    {
+        return $this->belongsTo(TicketType::class);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    
-    /**
-     * Связь с мероприятием
-     */
     public function event()
     {
         return $this->belongsTo(Event::class, 'event_id');
     }
 
-    /**
-     * Генерация уникального номера заказа
-     */
     public static function generateOrderNumber()
     {
         $prefix = 'ORD';
@@ -96,6 +86,7 @@ class Order extends Model
             'order_number' => self::generateOrderNumber(),
             'user_id' => $userId,
             'event_id' => $eventId,
+            'ticket_type_id' => $ticketTypeId,
             'quantity' => $quantity,
             'unit_price' => $unitPrice,
             'total_price' => $totalPrice,
@@ -112,16 +103,8 @@ class Order extends Model
 
     // ============= МЕТОДЫ ДЛЯ ПРОВЕРКИ =============
 
-    /**
-     * Проверка, можно ли отменить заказ
-     */
     public function canBeCancelled()
     {
-        // Заказ можно отменить если:
-        // 1. Статус позволяет (pending, paid, confirmed)
-        // 2. Мероприятие еще не началось (или есть запас времени)
-        // 3. Заказ не был уже отменен
-        
         $cancellableStatuses = [
             self::STATUS_PENDING,
             self::STATUS_PAID,
@@ -130,24 +113,18 @@ class Order extends Model
         
         return in_array($this->status, $cancellableStatuses) 
             && $this->event 
-            && $this->event->date > now()->addHours(24); // Можно отменить за 24 часа
+            && $this->event->date > now()->addHours(24);
     }
 
-    /**
-     * Проверка, можно ли вернуть деньги
-     */
     public function canBeRefunded()
     {
         return in_array($this->status, [self::STATUS_PAID, self::STATUS_CONFIRMED]) 
             && $this->event 
-            && $this->event->date > now()->addHours(48); // Возврат за 48 часов
+            && $this->event->date > now()->addHours(48);
     }
 
     // ============= МЕТОДЫ ДЛЯ ДЕЙСТВИЙ =============
 
-    /**
-     * Отмена заказа
-     */
     public function cancel($reason = null)
     {
         if (!$this->canBeCancelled() && $this->status !== self::STATUS_PENDING) {
@@ -169,9 +146,6 @@ class Order extends Model
         return true;
     }
 
-    /**
-     * Подтверждение оплаты
-     */
     public function markAsPaid($paymentMethod, $paymentId = null)
     {
         $this->update([
@@ -184,9 +158,6 @@ class Order extends Model
         return $this;
     }
 
-    /**
-     * Подтверждение заказа
-     */
     public function confirm()
     {
         $this->update([
@@ -196,9 +167,6 @@ class Order extends Model
         return $this;
     }
 
-    /**
-     * Завершение заказа
-     */
     public function complete()
     {
         $this->update([
@@ -210,9 +178,6 @@ class Order extends Model
 
     // ============= АКСЕССОРЫ =============
 
-    /**
-     * Получить статус на русском
-     */
     public function getStatusNameAttribute()
     {
         $statuses = [
@@ -224,7 +189,6 @@ class Order extends Model
             self::STATUS_COMPLETED => 'Завершен',
         ];
         
-        // Если заказ отменен из-за отмены мероприятия, показываем специальный статус
         if ($this->status === self::STATUS_CANCELLED && 
             str_contains($this->notes ?? '', 'Мероприятие отменено')) {
             return 'Мероприятие отменено';
@@ -233,9 +197,6 @@ class Order extends Model
         return $statuses[$this->status] ?? $this->status;
     }
 
-    /**
-     * Получить цвет статуса для CSS
-     */
     public function getStatusColorAttribute()
     {
         $colors = [
@@ -250,9 +211,6 @@ class Order extends Model
         return $colors[$this->status] ?? 'secondary';
     }
 
-    /**
-     * Получить метод оплаты на русском
-     */
     public function getPaymentMethodNameAttribute()
     {
         $methods = [
@@ -264,17 +222,11 @@ class Order extends Model
         return $methods[$this->payment_method] ?? $this->payment_method;
     }
 
-    /**
-     * Получить отформатированную общую стоимость
-     */
     public function getFormattedTotalPriceAttribute()
     {
         return number_format($this->total_price, 0, ',', ' ') . ' ₽';
     }
 
-    /**
-     * Получить отформатированную цену за билет
-     */
     public function getFormattedUnitPriceAttribute()
     {
         return number_format($this->unit_price, 0, ',', ' ') . ' ₽';
@@ -317,19 +269,14 @@ class Order extends Model
     protected static function booted()
     {
         static::creating(function ($order) {
-            // Уменьшаем количество доступных билетов
             $event = Event::find($order->event_id);
             if ($event && $event->available_tickets >= $order->quantity) {
-                $event->decrement('available_tickets', $order->quantity);
             } else {
                 return false;
             }
         });
     }
 
-    /**
-     * Проверка, истек ли срок оплаты (15 минут)
-     */
     public function isExpired()
     {
         if ($this->status !== self::STATUS_PENDING) {
@@ -339,16 +286,11 @@ class Order extends Model
         return $this->created_at->diffInMinutes(now()) >= 15;
     }
 
-    /**
-     * Проверка, можно ли оплатить (с учетом времени)
-     */
     public function canBePaid()
     {
         return $this->status === self::STATUS_PENDING 
             && $this->event 
             && $this->event->date > now()
-            && !$this->isExpired(); // Нельзя оплатить если срок истек
+            && !$this->isExpired();
     }
-    
-    
 }

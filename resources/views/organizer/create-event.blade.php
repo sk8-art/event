@@ -51,9 +51,9 @@
                                 class="form-control @error('type') is-invalid @enderror" 
                                 required>
                             <option value="">Выберите тип</option>
-                            <option value="concert" {{ old('type') == 'concert' ? 'selected' : '' }}>🎵 Концерт</option>
-                            <option value="festival" {{ old('type') == 'festival' ? 'selected' : '' }}>🎪 Фестиваль</option>
-                            <option value="other" {{ old('type') == 'other' ? 'selected' : '' }}>🎭 Другое</option>
+                            <option value="concert" {{ old('type') == 'concert' ? 'selected' : '' }}>Концерт</option>
+                            <option value="festival" {{ old('type') == 'festival' ? 'selected' : '' }}>Фестиваль</option>
+                            <option value="other" {{ old('type') == 'other' ? 'selected' : '' }}>Другое</option>
                         </select>
                         @error('type')
                             <span class="error-message">{{ $message }}</span>

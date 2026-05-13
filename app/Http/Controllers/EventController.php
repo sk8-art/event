@@ -380,8 +380,7 @@ public function festivals(Request $request)
             DB::table('ticket_types')->insert($ticketTypes);
         }
 
-        return redirect()->route('organizer.events')
-            ->with('success', 'Мероприятие успешно создано!');
+        return redirect()->route('organizer.events');
     }
 
 

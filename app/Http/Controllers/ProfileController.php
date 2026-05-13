@@ -48,7 +48,7 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return redirect()->back()->with('success', 'Профиль успешно обновлен');
+        return redirect()->back();
     }
 
     public function deleteAvatar()
@@ -63,10 +63,10 @@ class ProfileController extends Controller
             $user->avatar = null;
             $user->save();
             
-            return redirect()->back()->with('success', 'Аватар удален');
+            return redirect()->back();
         }
 
-        return redirect()->back()->with('error', 'Аватар не найден');
+        return redirect()->back();
     }
 
     public function orders()

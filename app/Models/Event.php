@@ -135,13 +135,17 @@ class Event extends Model
     // ============= МЕТОДЫ ДЛЯ ПОДСЧЕТА БИЛЕТОВ =============
 
     /**
-     * Количество проданных билетов
+     * Количество проданных билетов (из оплаченных заказов)
      */
     public function getSoldTicketsCount()
     {
-        return $this->total_tickets - $this->available_tickets;
+        // Считаем только оплаченные заказы
+        return $this->orders()
+            ->whereIn('status', ['paid', 'confirmed', 'completed'])
+            ->sum('quantity');
     }
 
+    
     /**
      * Количество доступных билетов
      */
@@ -165,7 +169,9 @@ class Event extends Model
      */
     public function getSoldTicketsAttribute()
     {
-        return $this->total_tickets - $this->available_tickets;
+        return $this->orders()
+            ->whereIn('status', ['paid', 'confirmed', 'completed'])
+            ->sum('quantity');
     }
 
     /**
@@ -182,7 +188,7 @@ class Event extends Model
     public function getFillPercentageAttribute()
     {
         if ($this->total_tickets === 0) return 0;
-        return round(($this->getSoldTicketsCount() / $this->total_tickets) * 100, 2);
+        return round(($this->sold_tickets / $this->total_tickets) * 100, 2);
     }
 
     /**
