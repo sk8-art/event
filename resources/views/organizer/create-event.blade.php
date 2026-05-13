@@ -536,6 +536,7 @@ select.form-control {
 .btn-primary {
     background: #ECF86E;
     color: #000;
+    font-family: 'Druk'; 
 }
 
 .btn-primary:hover {
