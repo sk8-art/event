@@ -852,9 +852,6 @@ if (filtersToggle) {
         font-size: 10px;
     }
     
-    .calendar-controls {
-        display: none;
-    }
 
     .event-blur {
         height: 40%;
