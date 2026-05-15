@@ -101,7 +101,7 @@ use Carbon\Carbon;
                 
                 <!-- Кнопка избранного -->
                 @auth
-                <button class="favorite-btn {{ Auth::user()->hasInFavorites($festival->id) ? 'active' : '' }}" 
+                <button class="favorite-btn {{ Auth::check() && Auth::user()->hasInFavorites($festival->id) ? 'active' : '' }}" 
                         data-event-id="{{ $festival->id }}"
                         onclick="event.stopPropagation(); toggleFavorite({{ $festival->id }}, this)" 
                         title="{{ Auth::user()->hasInFavorites($festival->id) ? 'Удалить из избранного' : 'В избранное' }}">
