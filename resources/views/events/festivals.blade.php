@@ -100,11 +100,10 @@ use Carbon\Carbon;
                 <div class="event-image-bg" style="background-image: url('{{ asset('storage/' . $festival->image) }}');"></div>
                 
                 <!-- Кнопка избранного -->
-                @auth
                 <button class="favorite-btn {{ Auth::check() && Auth::user()->hasInFavorites($festival->id) ? 'active' : '' }}" 
-                        data-event-id="{{ $festival->id }}"
-                        onclick="event.stopPropagation(); toggleFavorite({{ $festival->id }}, this)" 
-                        title="{{ Auth::user()->hasInFavorites($festival->id) ? 'Удалить из избранного' : 'В избранное' }}">
+                    data-event-id="{{ $festival->id }}"
+                    onclick="event.stopPropagation(); toggleFavorite({{ $festival->id }}, this)" 
+                    title="{{ Auth::check() && Auth::user()->hasInFavorites($festival->id) ? 'Удалить из избранного' : 'В избранное' }}">
                     
                     <svg class="heart-icon" 
                         xmlns="http://www.w3.org/2000/svg" 
@@ -121,7 +120,6 @@ use Carbon\Carbon;
                             d="M15 8C8.925 8 4 12.925 4 19c0 11 13 21 20 23.326C31 40 44 30 44 19c0-6.075-4.925-11-11-11c-3.72 0-7.01 1.847-9 4.674A10.987 10.987 0 0 0 15 8"/>
                     </svg>
                 </button>
-                @endauth
                 
                 <!-- Плавное размытие -->
                 <div class="event-blur"></div>
