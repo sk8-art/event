@@ -179,6 +179,16 @@ use Illuminate\Support\Facades\Auth;
                                     Создать мероприятие
                                 </a>
                             @endif
+                            @if(auth()->user()->isAdmin())
+                                <div class="dropdown-divider"></div>
+                                <a href="{{ route('admin.users') }}" class="dropdown-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24">
+                                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="12" cy="7" r="4"/>
+                                    </svg>
+                                    Админ-панель
+                                </a>
+                            @endif
                             <!-- 
                             @if(auth()->user()->isAdmin())
                                 <div class="dropdown-divider"></div>
