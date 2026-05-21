@@ -233,13 +233,14 @@ window.onclick = function(event) {
 }
 
 .status-green {
-    background: #28a745;
+    background: #ECF86E;
+    color: #000;
 }
 .status-red {
     background: #dc3545;
 }
 .status-gray {
-    background: #6c757d;
+    background: #000;
 }
 
 .event-details {
