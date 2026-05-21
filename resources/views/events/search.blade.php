@@ -435,6 +435,8 @@ function highlightText($text, $query) {
 
 
 .badge.hot {
+    position: absolute;
+    top: -32px;
     background: #ff4757;
     color: white;
 }
