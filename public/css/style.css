@@ -604,6 +604,7 @@ body {
 
 
 .alert-error {
+    width: fit-content;
     background: #ECF86E;
     color: #000000;
 }
