@@ -152,7 +152,7 @@
                     </form>
                 @else
                     <div class="no-tickets">
-                        <p>🎫 Нет доступных типов билетов</p>
+                        <p>Нет доступных типов билетов</p>
                     </div>
                 @endif
             @else
