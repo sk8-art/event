@@ -8,34 +8,6 @@
         <h1 class="page-title">Мои заказы</h1>
     </div>
     
-    @if(auth()->user()->isAdmin())
-        <div class="admin-stats">
-            <h2 class="section-title">Статистика платформы</h2>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M16.67 13.13C18.04 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.57-3.47-6.33-3.87"/><circle cx="9" cy="8" r="4" fill="currentColor" fill-rule="evenodd"/><path fill="currentColor" fill-rule="evenodd" d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4c-.47 0-.91.1-1.33.24a5.98 5.98 0 0 1 0 7.52c.42.14.86.24 1.33.24m-6 1c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4"/></svg></div>
-                    <div class="stat-content">
-                        <span class="stat-value">{{ $totalUsers }}</span>
-                        <span class="stat-label">Пользователей</span>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><title>Calendar SVG Icon</title><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2      "><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><path d="M16 2v4M8 2v4m-5 4h18"></path></g></svg></div>
-                    <div class="stat-content">
-                        <span class="stat-value">{{ $totalEvents }}</span>
-                        <span class="stat-label">Мероприятий</span>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><title>Ticket SVG Icon</title><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 0 0-2 2v3a2 2 0 1 1 0 4v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3a2 2 0 1 1 0-4V7a2 2 0 0 0-2-2z"></path></svg></div>
-                    <div class="stat-content">
-                        <span class="stat-value">{{ $totalOrders }}</span>
-                        <span class="stat-label">Заказов</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif
 
     @php
         $cancelledEvents = collect($orders ?? [])->filter(function($order) {
